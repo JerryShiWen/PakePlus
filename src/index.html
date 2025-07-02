@@ -99,6 +99,16 @@
                 from { opacity: 1; }
                 to { opacity: 0; }
             }
+            .world-time-card {
+                transition: all 0.3s ease;
+            }
+            .world-time-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            }
+            .highlight {
+                background-color: rgba(59, 130, 246, 0.1);
+            }
         }
     </style>
 </head>
@@ -109,7 +119,7 @@
             <div class="container mx-auto px-4 py-3 flex items-center justify-between">
                 <div class="flex items-center space-x-2">
                     <i class="fa fa-clock-o text-primary dark:text-blue-400 text-2xl"></i>
-                    <h1 class="text-xl font-bold text-gray-800 dark:text-white">TimerClock</h1>
+                    <h1 class="text-xl font-bold text-gray-800 dark:text-white" data-i18n="appTitle">TimerClock</h1>
                 </div>
                 
                 <div class="hidden md:flex items-center space-x-6">
@@ -119,19 +129,21 @@
                         <span class="mx-1">|</span>
                         <span id="current-date">----年--月--日</span>
                     </button>
-                    <button id="history-btn" class="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 transition-colors">
-                        <i class="fa fa-history mr-1"></i>历史
+                    <button id="world-clock-btn" class="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 transition-colors">
+                        <i class="fa fa-globe mr-1"></i><span data-i18n="worldClock">世界时钟</span>
                     </button>
-                    <!-- 新增通知和信息按钮 -->
+                    <button id="history-btn" class="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 transition-colors">
+                        <i class="fa fa-history mr-1"></i><span data-i18n="history">历史</span>
+                    </button>
                     <button id="notifications-btn" class="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 transition-colors relative">
-                        <i class="fa fa-bell mr-1"></i>通知和信息
+                        <i class="fa fa-bell mr-1"></i><span data-i18n="notifications">通知和信息</span>
                         <span id="notification-badge" class="absolute -top-1 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
                     </button>
                     <button id="settings-btn" class="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 transition-colors">
-                        <i class="fa fa-cog mr-1"></i>设置
+                        <i class="fa fa-cog mr-1"></i><span data-i18n="settings">设置</span>
                     </button>
                     <button id="about-btn" class="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 transition-colors">
-                        <i class="fa fa-info-circle mr-1"></i>关于
+                        <i class="fa fa-info-circle mr-1"></i><span data-i18n="about">关于</span>
                     </button>
                     <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
                         <i class="fa fa-moon-o dark:hidden text-gray-700"></i>
@@ -153,25 +165,27 @@
                         <span class="mx-1">|</span>
                         <span id="mobile-current-date">----年--月--日</span>
                     </button>
-                    <button id="mobile-history-btn" class="text-left text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 transition-colors py-2">
-                        <i class="fa fa-history mr-1"></i>历史记录
+                    <button id="mobile-world-clock-btn" class="text-left text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 transition-colors py-2">
+                        <i class="fa fa-globe mr-1"></i><span data-i18n="worldClock">世界时钟</span>
                     </button>
-                    <!-- 新增移动端通知和信息按钮 -->
+                    <button id="mobile-history-btn" class="text-left text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 transition-colors py-2">
+                        <i class="fa fa-history mr-1"></i><span data-i18n="history">历史记录</span>
+                    </button>
                     <button id="mobile-notifications-btn" class="text-left text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 transition-colors py-2 relative">
-                        <i class="fa fa-bell mr-1"></i>通知和信息
+                        <i class="fa fa-bell mr-1"></i><span data-i18n="notifications">通知和信息</span>
                         <span id="mobile-notification-badge" class="absolute top-3 right-0 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
                     </button>
                     <button id="mobile-settings-btn" class="text-left text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 transition-colors py-2">
-                        <i class="fa fa-cog mr-1"></i>设置
+                        <i class="fa fa-cog mr-1"></i><span data-i18n="settings">设置</span>
                     </button>
                     <button id="mobile-about-btn" class="text-left text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 transition-colors py-2">
-                        <i class="fa fa-info-circle mr-1"></i>关于
+                        <i class="fa fa-info-circle mr-1"></i><span data-i18n="about">关于</span>
                     </button>
                     <button id="mobile-theme-toggle" class="text-left text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 transition-colors py-2">
                         <i class="fa fa-moon-o dark:hidden mr-1"></i>
                         <i class="fa fa-sun-o hidden dark:inline-block mr-1 text-yellow-400"></i>
-                        <span class="dark:hidden">深色模式</span>
-                        <span class="hidden dark:inline-block">浅色模式</span>
+                        <span class="dark:hidden" data-i18n="darkMode">深色模式</span>
+                        <span class="hidden dark:inline-block" data-i18n="lightMode">浅色模式</span>
                     </button>
                 </div>
             </div>
@@ -183,47 +197,47 @@
             <div class="mb-8">
                 <div class="flex flex-wrap justify-center gap-3 mb-6">
                     <button id="timer-tab" class="timer-tab-btn bg-primary text-white px-5 py-2 rounded-full shadow-md hover:shadow-lg transition-all duration-300 flex items-center">
-                        <i class="fa fa-clock-o mr-2"></i>倒计时
+                        <i class="fa fa-clock-o mr-2"></i><span data-i18n="countdown">倒计时</span>
                     </button>
                     <button id="stopwatch-tab" class="timer-tab-btn bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-5 py-2 rounded-full shadow-md hover:shadow-lg transition-all duration-300 flex items-center">
-                        <i class="fa fa-hourglass-half mr-2"></i>秒表
+                        <i class="fa fa-hourglass-half mr-2"></i><span data-i18n="stopwatch">秒表</span>
                     </button>
                     <button id="alarm-tab" class="timer-tab-btn bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-5 py-2 rounded-full shadow-md hover:shadow-lg transition-all duration-300 flex items-center">
-                        <i class="fa fa-bell-o mr-2"></i>闹钟
+                        <i class="fa fa-bell-o mr-2"></i><span data-i18n="alarm">闹钟</span>
                     </button>
                     <button id="countdown-day-tab" class="timer-tab-btn bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-5 py-2 rounded-full shadow-md hover:shadow-lg transition-all duration-300 flex items-center">
-                        <i class="fa fa-calendar mr-2"></i>倒计日
+                        <i class="fa fa-calendar mr-2"></i><span data-i18n="countdownDay">倒计日</span>
                     </button>
                 </div>
                 
                 <!-- 倒计时创建表单 -->
                 <div id="timer-create-form" class="timer-form bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 max-w-2xl mx-auto transform transition-all duration-500">
                     <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4 flex items-center">
-                        <i class="fa fa-clock-o text-primary mr-2"></i>创建倒计时
+                        <i class="fa fa-clock-o text-primary mr-2"></i><span data-i18n="createCountdown">创建倒计时</span>
                     </h2>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div class="space-y-2">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">小时</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" data-i18n="hours">小时</label>
                             <input type="number" id="timer-hours" min="0" max="23" value="0" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white focus:border-primary transition-colors">
                         </div>
                         <div class="space-y-2">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">分钟</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" data-i18n="minutes">分钟</label>
                             <input type="number" id="timer-minutes" min="0" max="59" value="0" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white focus:border-primary transition-colors">
                         </div>
                         <div class="space-y-2">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">秒</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" data-i18n="seconds">秒</label>
                             <input type="number" id="timer-seconds" min="0" max="59" value="0" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white focus:border-primary transition-colors">
                         </div>
                     </div>
                     <div class="mt-4 space-y-2">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">名称</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" data-i18n="name">名称</label>
                         <input type="text" id="timer-name" placeholder="输入倒计时名称" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white focus:border-primary transition-colors">
                     </div>
                     <div class="mt-6 flex justify-end space-x-3">
-                        <button id="cancel-timer" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                        <button id="cancel-timer" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" data-i18n="cancel">
                             取消
                         </button>
-                        <button id="create-timer" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
+                        <button id="create-timer" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors" data-i18n="createCountdown">
                             创建倒计时
                         </button>
                     </div>
@@ -232,17 +246,17 @@
                 <!-- 秒表创建表单 -->
                 <div id="stopwatch-create-form" class="timer-form hidden bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 max-w-2xl mx-auto transform transition-all duration-500">
                     <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4 flex items-center">
-                        <i class="fa fa-hourglass-half text-primary mr-2"></i>创建秒表
+                        <i class="fa fa-hourglass-half text-primary mr-2"></i><span data-i18n="createStopwatch">创建秒表</span>
                     </h2>
                     <div class="mt-4 space-y-2">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">名称</label>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" data-i18n="name">名称</label>
                         <input type="text" id="stopwatch-name" placeholder="输入秒表名称" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white focus:border-primary transition-colors">
                     </div>
                     <div class="mt-6 flex justify-end space-x-3">
-                        <button id="cancel-stopwatch" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                        <button id="cancel-stopwatch" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" data-i18n="cancel">
                             取消
                         </button>
-                        <button id="create-stopwatch" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
+                        <button id="create-stopwatch" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors" data-i18n="createStopwatch">
                             创建秒表
                         </button>
                     </div>
@@ -251,23 +265,23 @@
                 <!-- 闹钟创建表单 -->
                 <div id="alarm-create-form" class="timer-form hidden bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 max-w-2xl mx-auto transform transition-all duration-500">
                     <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4 flex items-center">
-                        <i class="fa fa-bell-o text-primary mr-2"></i>设置闹钟
+                        <i class="fa fa-bell-o text-primary mr-2"></i><span data-i18n="setAlarm">设置闹钟</span>
                     </h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="space-y-2">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">时间</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" data-i18n="time">时间</label>
                             <input type="time" id="alarm-time" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white focus:border-primary transition-colors">
                         </div>
                         <div class="space-y-2">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">名称</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" data-i18n="name">名称</label>
                             <input type="text" id="alarm-name" placeholder="输入闹钟名称" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white focus:border-primary transition-colors">
                         </div>
                     </div>
                     <div class="mt-6 flex justify-end space-x-3">
-                        <button id="cancel-alarm" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                        <button id="cancel-alarm" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" data-i18n="cancel">
                             取消
                         </button>
-                        <button id="create-alarm" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
+                        <button id="create-alarm" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors" data-i18n="setAlarm">
                             设置闹钟
                         </button>
                     </div>
@@ -276,23 +290,23 @@
                 <!-- 倒计日创建表单 -->
                 <div id="countdown-day-create-form" class="timer-form hidden bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 max-w-2xl mx-auto transform transition-all duration-500">
                     <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4 flex items-center">
-                        <i class="fa fa-calendar text-primary mr-2"></i>创建倒计日
+                        <i class="fa fa-calendar text-primary mr-2"></i><span data-i18n="createCountdownDay">创建倒计日</span>
                     </h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="space-y-2">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">日期</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" data-i18n="date">日期</label>
                             <input type="date" id="countdown-day-date" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white focus:border-primary transition-colors">
                         </div>
                         <div class="space-y-2">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">名称</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" data-i18n="name">名称</label>
                             <input type="text" id="countdown-day-name" placeholder="输入事件名称" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white focus:border-primary transition-colors">
                         </div>
                     </div>
                     <div class="mt-6 flex justify-end space-x-3">
-                        <button id="cancel-countdown-day" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                        <button id="cancel-countdown-day" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" data-i18n="cancel">
                             取消
                         </button>
-                        <button id="create-countdown-day" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
+                        <button id="create-countdown-day" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors" data-i18n="createCountdownDay">
                             创建倒计日
                         </button>
                     </div>
@@ -304,8 +318,8 @@
                 <!-- 计时器卡片将动态添加到这里 -->
                 <div class="text-center text-gray-500 dark:text-gray-400 py-10 col-span-full">
                     <i class="fa fa-clock-o text-5xl mb-4 opacity-30"></i>
-                    <p>还没有任何计时器</p>
-                    <p class="text-sm mt-2">创建一个新的计时器开始计时</p>
+                    <p data-i18n="noTimers">还没有任何计时器</p>
+                    <p class="text-sm mt-2" data-i18n="createTimerPrompt">创建一个新的计时器开始计时</p>
                 </div>
             </div>
         </main>
@@ -313,17 +327,40 @@
         <!-- 页脚 -->
         <footer class="py-4 border-t border-gray-200 dark:border-gray-700 glass-effect dark:dark-glass">
             <div class="container mx-auto px-4 text-center text-gray-500 dark:text-gray-400 text-sm">
-                <p>© 2025 TimerClock | 高效时间管理工具</p>
+                <p data-i18n="footer">© 2025 TimerClock | 高效时间管理工具</p>
             </div>
         </footer>
+    </div>
+
+    <!-- 世界时钟模态框 -->
+    <div id="world-clock-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-4xl w-full max-h-[80vh] flex flex-col transform transition-all duration-300 scale-95 opacity-0" id="world-clock-modal-content">
+            <div class="p-5 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+                <h3 class="text-xl font-bold text-gray-800 dark:text-white" data-i18n="worldClock">世界时钟</h3>
+                <button id="close-world-clock" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                    <i class="fa fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="p-5">
+                <div class="relative mb-4">
+                    <input type="text" id="timezone-search" placeholder="搜索时区..." class="w-full px-4 py-2 pl-10 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white focus:border-primary transition-colors" data-i18n-placeholder="searchPlaceholder">
+                    <i class="fa fa-search absolute left-3 top-3 text-gray-400"></i>
+                </div>
+            </div>
+            <div class="px-5 pb-5 overflow-y-auto scrollbar-hide flex-grow">
+                <div id="timezones-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- 时区卡片将动态添加到这里 -->
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- 通知面板（右上角） -->
     <div id="notification-panel" class="notification-panel scrollbar-hide hidden">
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg">
             <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
-                <h3 class="font-bold text-gray-800 dark:text-white">通知</h3>
-                <button id="clear-notifications" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 text-sm">
+                <h3 class="font-bold text-gray-800 dark:text-white" data-i18n="notifications">通知</h3>
+                <button id="clear-notifications" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 text-sm" data-i18n="clearAll">
                     全部清除
                 </button>
             </div>
@@ -331,7 +368,7 @@
                 <!-- 通知将动态添加到这里 -->
                 <div class="text-center text-gray-500 dark:text-gray-400 py-8">
                     <i class="fa fa-bell-slash text-3xl mb-3 opacity-30"></i>
-                    <p>没有新通知</p>
+                    <p data-i18n="noNotifications">没有新通知</p>
                 </div>
             </div>
         </div>
@@ -341,7 +378,7 @@
     <div id="history-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-4xl w-full max-h-[80vh] flex flex-col transform transition-all duration-300 scale-95 opacity-0" id="history-modal-content">
             <div class="p-5 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
-                <h3 class="text-xl font-bold text-gray-800 dark:text-white">历史记录</h3>
+                <h3 class="text-xl font-bold text-gray-800 dark:text-white" data-i18n="history">历史记录</h3>
                 <button id="close-history" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
                     <i class="fa fa-times text-xl"></i>
                 </button>
@@ -351,12 +388,12 @@
                     <!-- 历史记录将动态添加到这里 -->
                     <div class="text-center text-gray-500 dark:text-gray-400 py-10">
                         <i class="fa fa-history text-4xl mb-3 opacity-30"></i>
-                        <p>暂无历史记录</p>
+                        <p data-i18n="noHistory">暂无历史记录</p>
                     </div>
                 </div>
             </div>
             <div class="p-5 border-t border-gray-200 dark:border-gray-700 flex justify-end">
-                <button id="clear-history" class="px-4 py-2 bg-danger text-white rounded-lg hover:bg-danger/90 transition-colors">
+                <button id="clear-history" class="px-4 py-2 bg-danger text-white rounded-lg hover:bg-danger/90 transition-colors" data-i18n="clearHistory">
                     清空历史
                 </button>
             </div>
@@ -367,28 +404,28 @@
     <div id="settings-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-2xl w-full transform transition-all duration-300 scale-95 opacity-0" id="settings-modal-content">
             <div class="p-5 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
-                <h3 class="text-xl font-bold text-gray-800 dark:text-white">设置</h3>
+                <h3 class="text-xl font-bold text-gray-800 dark:text-white" data-i18n="settings">设置</h3>
                 <button id="close-settings" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
                     <i class="fa fa-times text-xl"></i>
                 </button>
             </div>
             <div class="p-5 space-y-6">
                 <div>
-                    <h4 class="text-lg font-medium text-gray-800 dark:text-white mb-3">主题设置</h4>
+                    <h4 class="text-lg font-medium text-gray-800 dark:text-white mb-3" data-i18n="themeSettings">主题设置</h4>
                     <div class="grid grid-cols-2 gap-4">
                         <button id="theme-light" class="theme-btn py-3 rounded-lg border-2 border-gray-200 dark:border-gray-700 text-center hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                             <i class="fa fa-sun-o text-yellow-500 mb-1"></i>
-                            <p class="font-medium">浅色模式</p>
+                            <p class="font-medium" data-i18n="lightMode">浅色模式</p>
                         </button>
                         <button id="theme-dark" class="theme-btn py-3 rounded-lg border-2 border-gray-200 dark:border-gray-700 text-center hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                             <i class="fa fa-moon-o text-blue-400 mb-1"></i>
-                            <p class="font-medium">深色模式</p>
+                            <p class="font-medium" data-i18n="darkMode">深色模式</p>
                         </button>
                     </div>
                 </div>
                 
                 <div>
-                    <h4 class="text-lg font-medium text-gray-800 dark:text-white mb-3">背景设置</h4>
+                    <h4 class="text-lg font-medium text-gray-800 dark:text-white mb-3" data-i18n="backgroundSettings">背景设置</h4>
                     <div class="grid grid-cols-3 gap-4">
                         <button id="bg-default" class="bg-btn h-20 rounded-lg border-2 border-gray-200 dark:border-gray-700 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-gray-800 hover:opacity-80 transition-opacity"></button>
                         <button id="bg-blue" class="bg-btn h-20 rounded-lg border-2 border-gray-200 dark:border-gray-700 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900 dark:to-blue-800 hover:opacity-80 transition-opacity"></button>
@@ -400,21 +437,21 @@
                 </div>
                 
                 <div>
-                    <h4 class="text-lg font-medium text-gray-800 dark:text-white mb-3">通知设置</h4>
+                    <h4 class="text-lg font-medium text-gray-800 dark:text-white mb-3" data-i18n="notificationSettings">通知设置</h4>
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
-                            <label class="text-gray-700 dark:text-gray-300">通知方式</label>
+                            <label class="text-gray-700 dark:text-gray-300" data-i18n="notificationMethod">通知方式</label>
                             <div class="flex space-x-2">
-                                <button id="notification-top-right" class="notification-type-btn px-4 py-2 bg-primary text-white rounded-lg">
+                                <button id="notification-top-right" class="notification-type-btn px-4 py-2 bg-primary text-white rounded-lg" data-i18n="topRight">
                                     右上角
                                 </button>
-                                <button id="notification-fullscreen" class="notification-type-btn px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg">
+                                <button id="notification-fullscreen" class="notification-type-btn px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg" data-i18n="fullscreen">
                                     全屏
                                 </button>
                             </div>
                         </div>
                         <div class="flex items-center justify-between">
-                            <label class="text-gray-700 dark:text-gray-300">自动保存计时器</label>
+                            <label class="text-gray-700 dark:text-gray-300" data-i18n="autoSaveTimers">自动保存计时器</label>
                             <label class="relative inline-flex items-center cursor-pointer">
                                 <input type="checkbox" id="auto-save" class="sr-only peer" checked>
                                 <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
@@ -422,9 +459,24 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- 新增语言设置 -->
+                <div>
+                    <h4 class="text-lg font-medium text-gray-800 dark:text-white mb-3" data-i18n="languageSettings">语言设置</h4>
+                    <div class="grid grid-cols-2 gap-4">
+                        <button id="lang-zh" class="lang-btn py-3 rounded-lg border-2 border-primary bg-primary/10 text-center hover:bg-primary/20 transition-colors">
+                            <span class="text-xl mr-2">🇨🇳</span>
+                            <p class="font-medium">简体中文</p>
+                        </button>
+                        <button id="lang-en" class="lang-btn py-3 rounded-lg border-2 border-gray-200 dark:border-gray-700 text-center hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                            <span class="text-xl mr-2">🇺🇸</span>
+                            <p class="font-medium">English</p>
+                        </button>
+                    </div>
+                </div>
             </div>
             <div class="p-5 border-t border-gray-200 dark:border-gray-700">
-                <button id="save-settings" class="w-full py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
+                <button id="save-settings" class="w-full py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors" data-i18n="saveSettings">
                     保存设置
                 </button>
             </div>
@@ -435,7 +487,7 @@
     <div id="about-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full transform transition-all duration-300 scale-95 opacity-0" id="about-modal-content">
             <div class="p-5 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
-                <h3 class="text-xl font-bold text-gray-800 dark:text-white">关于TimerClock</h3>
+                <h3 class="text-xl font-bold text-gray-800 dark:text-white" data-i18n="aboutTimerClock">关于TimerClock</h3>
                 <button id="close-about" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
                     <i class="fa fa-times text-xl"></i>
                 </button>
@@ -446,30 +498,31 @@
                         <i class="fa fa-clock-o text-3xl"></i>
                     </div>
                     <h4 class="text-xl font-bold text-gray-800 dark:text-white">TimerClock</h4>
-                    <p class="text-gray-600 dark:text-gray-400">版本 2.1.0</p>
+                    <p class="text-gray-600 dark:text-gray-400" data-i18n="version">版本 2.1.0</p>
                 </div>
                 
-                <p class="text-gray-600 dark:text-gray-400">
+                <p class="text-gray-600 dark:text-gray-400" data-i18n="appDescription">
                     TimerClock是一款功能强大的时间管理工具，支持倒计时、秒表、闹钟和倒计日功能。所有数据保存在本地，确保您的隐私和数据安全。
                 </p>
                 
                 <div class="space-y-2">
-                    <h5 class="font-medium text-gray-800 dark:text-white">功能特点：</h5>
+                    <h5 class="font-medium text-gray-800 dark:text-white" data-i18n="features">功能特点：</h5>
                     <ul class="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-1">
-                        <li>创建多个独立的倒计时、秒表、闹钟和倒计日</li>
-                        <li>为每个计时器命名，方便管理</li>
-                        <li>本地保存计时器数据，随时继续使用</li>
-                        <li>查看计时器历史记录</li>
-                        <li>自定义主题和背景</li>
-                        <li>通知提醒功能</li>
+                        <li data-i18n="feature1">创建多个独立的倒计时、秒表、闹钟和倒计日</li>
+                        <li data-i18n="feature2">为每个计时器命名，方便管理</li>
+                        <li data-i18n="feature3">本地保存计时器数据，随时继续使用</li>
+                        <li data-i18n="feature4">查看计时器历史记录</li>
+                        <li data-i18n="feature5">自定义主题和背景</li>
+                        <li data-i18n="feature6">通知提醒功能</li>
+                        <li data-i18n="feature7">世界时钟功能</li>
                     </ul>
                 </div>
             </div>
             <div class="p-5 border-t border-gray-200 dark:border-gray-700 flex justify-end space-x-3">
-                <button id="author-btn" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
+                <button id="author-btn" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors" data-i18n="author">
                     作者
                 </button>
-                <button id="confirm-about" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                <button id="confirm-about" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors" data-i18n="confirm">
                     确定
                 </button>
             </div>
@@ -480,7 +533,7 @@
     <div id="timer-window" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full transform transition-all duration-300 scale-95 opacity-0" id="timer-window-content">
             <div class="p-5 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
-                <h3 id="window-timer-name" class="text-xl font-bold text-gray-800 dark:text-white">计时器</h3>
+                <h3 id="window-timer-name" class="text-xl font-bold text-gray-800 dark:text-white" data-i18n="timer">计时器</h3>
                 <button id="close-timer-window" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
                     <i class="fa fa-times text-xl"></i>
                 </button>
@@ -490,22 +543,22 @@
                 
                 <div class="flex justify-center space-x-3 mb-6">
                     <button id="window-timer-start" class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
-                        <i class="fa fa-play mr-2"></i>开始
+                        <i class="fa fa-play mr-2"></i><span data-i18n="start">开始</span>
                     </button>
                     <button id="window-timer-pause" class="px-6 py-3 bg-warning text-white rounded-lg hover:bg-warning/90 transition-colors hidden">
-                        <i class="fa fa-pause mr-2"></i>暂停
+                        <i class="fa fa-pause mr-2"></i><span data-i18n="pause">暂停</span>
                     </button>
                     <button id="window-timer-reset" class="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
-                        <i class="fa fa-refresh mr-2"></i>重置
+                        <i class="fa fa-refresh mr-2"></i><span data-i18n="reset">重置</span>
                     </button>
                 </div>
                 
                 <div class="flex justify-center space-x-3">
                     <button id="window-timer-delete" class="px-4 py-2 bg-danger text-white rounded-lg hover:bg-danger/90 transition-colors">
-                        <i class="fa fa-trash-o mr-1"></i>删除
+                        <i class="fa fa-trash-o mr-1"></i><span data-i18n="delete">删除</span>
                     </button>
                     <button id="window-timer-minimize" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
-                        <i class="fa fa-window-minimize mr-1"></i>最小化
+                        <i class="fa fa-window-minimize mr-1"></i><span data-i18n="minimize">最小化</span>
                     </button>
                 </div>
             </div>
@@ -516,7 +569,7 @@
     <div id="notifications-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-2xl w-full max-h-[80vh] flex flex-col transform transition-all duration-300 scale-95 opacity-0" id="notifications-modal-content">
             <div class="p-5 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
-                <h3 class="text-xl font-bold text-gray-800 dark:text-white">通知和信息</h3>
+                <h3 class="text-xl font-bold text-gray-800 dark:text-white" data-i18n="notificationsAndInfo">通知和信息</h3>
                 <button id="close-notifications" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
                     <i class="fa fa-times text-xl"></i>
                 </button>
@@ -526,13 +579,13 @@
                     <!-- 通知将动态添加到这里 -->
                     <div class="text-center text-gray-500 dark:text-gray-400 py-10">
                         <i class="fa fa-bell-slash text-4xl mb-3 opacity-30"></i>
-                        <p>没有通知</p>
-                        <p class="text-sm mt-2">计时器结束时将显示通知</p>
+                        <p data-i18n="noNotifications">没有通知</p>
+                        <p class="text-sm mt-2" data-i18n="notificationsHint">计时器结束时将显示通知</p>
                     </div>
                 </div>
             </div>
             <div class="p-5 border-t border-gray-200 dark:border-gray-700 flex justify-end">
-                <button id="clear-all-notifications" class="px-4 py-2 bg-danger text-white rounded-lg hover:bg-danger/90 transition-colors">
+                <button id="clear-all-notifications" class="px-4 py-2 bg-danger text-white rounded-lg hover:bg-danger/90 transition-colors" data-i18n="clearAllNotifications">
                     清除所有通知
                 </button>
             </div>
@@ -549,8 +602,167 @@
             theme: 'system',
             background: 'default',
             autoSave: true,
-            notificationType: 'top-right' // top-right 或 fullscreen
+            notificationType: 'top-right', // top-right 或 fullscreen
+            language: 'zh' // 默认语言
         };
+        
+        // 多语言字典
+        const translations = {
+            zh: {
+                appTitle: "TimerClock",
+                worldClock: "世界时钟",
+                history: "历史",
+                notifications: "通知和信息",
+                settings: "设置",
+                about: "关于",
+                darkMode: "深色模式",
+                lightMode: "浅色模式",
+                countdown: "倒计时",
+                stopwatch: "秒表",
+                alarm: "闹钟",
+                countdownDay: "倒计日",
+                createCountdown: "创建倒计时",
+                hours: "小时",
+                minutes: "分钟",
+                seconds: "秒",
+                name: "名称",
+                cancel: "取消",
+                createStopwatch: "创建秒表",
+                setAlarm: "设置闹钟",
+                time: "时间",
+                createCountdownDay: "创建倒计日",
+                date: "日期",
+                noTimers: "还没有任何计时器",
+                createTimerPrompt: "创建一个新的计时器开始计时",
+                footer: "© 2025 TimerClock | 高效时间管理工具",
+                searchPlaceholder: "搜索时区...",
+                clearAll: "全部清除",
+                noNotifications: "没有新通知",
+                history: "历史记录",
+                noHistory: "暂无历史记录",
+                clearHistory: "清空历史",
+                themeSettings: "主题设置",
+                backgroundSettings: "背景设置",
+                notificationSettings: "通知设置",
+                notificationMethod: "通知方式",
+                topRight: "右上角",
+                fullscreen: "全屏",
+                autoSaveTimers: "自动保存计时器",
+                languageSettings: "语言设置",
+                saveSettings: "保存设置",
+                aboutTimerClock: "关于TimerClock",
+                version: "版本 2.1.0",
+                appDescription: "TimerClock是一款功能强大的时间管理工具，支持倒计时、秒表、闹钟和倒计日功能。所有数据保存在本地，确保您的隐私和数据安全。",
+                features: "功能特点：",
+                feature1: "创建多个独立的倒计时、秒表、闹钟和倒计日",
+                feature2: "为每个计时器命名，方便管理",
+                feature3: "本地保存计时器数据，随时继续使用",
+                feature4: "查看计时器历史记录",
+                feature5: "自定义主题和背景",
+                feature6: "通知提醒功能",
+                feature7: "世界时钟功能",
+                author: "作者",
+                confirm: "确定",
+                timer: "计时器",
+                start: "开始",
+                pause: "暂停",
+                reset: "重置",
+                delete: "删除",
+                minimize: "最小化",
+                notificationsAndInfo: "通知和信息",
+                notificationsHint: "计时器结束时将显示通知",
+                clearAllNotifications: "清除所有通知"
+            },
+            en: {
+                appTitle: "TimerClock",
+                worldClock: "World Clock",
+                history: "History",
+                notifications: "Notifications & Info",
+                settings: "Settings",
+                about: "About",
+                darkMode: "Dark Mode",
+                lightMode: "Light Mode",
+                countdown: "Countdown",
+                stopwatch: "Stopwatch",
+                alarm: "Alarm",
+                countdownDay: "Countdown Day",
+                createCountdown: "Create Countdown",
+                hours: "Hours",
+                minutes: "Minutes",
+                seconds: "Seconds",
+                name: "Name",
+                cancel: "Cancel",
+                createStopwatch: "Create Stopwatch",
+                setAlarm: "Set Alarm",
+                time: "Time",
+                createCountdownDay: "Create Countdown Day",
+                date: "Date",
+                noTimers: "No timers yet",
+                createTimerPrompt: "Create a new timer to start",
+                footer: "© 2025 TimerClock | Efficient Time Management Tool",
+                searchPlaceholder: "Search timezones...",
+                clearAll: "Clear All",
+                noNotifications: "No new notifications",
+                history: "History",
+                noHistory: "No history yet",
+                clearHistory: "Clear History",
+                themeSettings: "Theme Settings",
+                backgroundSettings: "Background Settings",
+                notificationSettings: "Notification Settings",
+                notificationMethod: "Notification Method",
+                topRight: "Top Right",
+                fullscreen: "Fullscreen",
+                autoSaveTimers: "Auto Save Timers",
+                languageSettings: "Language Settings",
+                saveSettings: "Save Settings",
+                aboutTimerClock: "About TimerClock",
+                version: "Version 2.1.0",
+                appDescription: "TimerClock is a powerful time management tool that supports countdowns, stopwatches, alarms, and day counters. All data is saved locally to ensure your privacy and data security.",
+                features: "Features:",
+                feature1: "Create multiple independent timers, stopwatches, alarms, and day counters",
+                feature2: "Name each timer for easy management",
+                feature3: "Save timer data locally to continue anytime",
+                feature4: "View timer history records",
+                feature5: "Customize themes and backgrounds",
+                feature6: "Notification reminder function",
+                feature7: "World clock feature",
+                author: "Author",
+                confirm: "OK",
+                timer: "Timer",
+                start: "Start",
+                pause: "Pause",
+                reset: "Reset",
+                delete: "Delete",
+                minimize: "Minimize",
+                notificationsAndInfo: "Notifications & Information",
+                notificationsHint: "Notifications will appear when timers end",
+                clearAllNotifications: "Clear All Notifications"
+            }
+        };
+        
+        // 常用时区列表
+        const timezones = [
+            { id: "Asia/Shanghai", name: "中国时间 (北京)", city: "Beijing" },
+            { id: "Asia/Tokyo", name: "日本时间 (东京)", city: "Tokyo" },
+            { id: "America/New_York", name: "美国东部时间 (纽约)", city: "New York" },
+            { id: "America/Los_Angeles", name: "美国太平洋时间 (洛杉矶)", city: "Los Angeles" },
+            { id: "Europe/London", name: "格林尼治标准时间 (伦敦)", city: "London" },
+            { id: "Europe/Paris", name: "欧洲中部时间 (巴黎)", city: "Paris" },
+            { id: "Europe/Berlin", name: "欧洲中部时间 (柏林)", city: "Berlin" },
+            { id: "Australia/Sydney", name: "澳大利亚东部时间 (悉尼)", city: "Sydney" },
+            { id: "Asia/Dubai", name: "海湾标准时间 (迪拜)", city: "Dubai" },
+            { id: "Asia/Singapore", name: "新加坡时间", city: "Singapore" },
+            { id: "Asia/Hong_Kong", name: "香港时间", city: "Hong Kong" },
+            { id: "Asia/Seoul", name: "韩国时间 (首尔)", city: "Seoul" },
+            { id: "Asia/Kolkata", name: "印度标准时间 (新德里)", city: "New Delhi" },
+            { id: "Asia/Bangkok", name: "泰国时间 (曼谷)", city: "Bangkok" },
+            { id: "America/Toronto", name: "加拿大东部时间 (多伦多)", city: "Toronto" },
+            { id: "America/Chicago", name: "美国中部时间 (芝加哥)", city: "Chicago" },
+            { id: "Pacific/Auckland", name: "新西兰时间 (奥克兰)", city: "Auckland" },
+            { id: "Africa/Johannesburg", name: "南非标准时间 (约翰内斯堡)", city: "Johannesburg" },
+            { id: "Asia/Jerusalem", name: "以色列时间 (耶路撒冷)", city: "Jerusalem" },
+            { id: "Asia/Riyadh", name: "阿拉伯标准时间 (利雅得)", city: "Riyadh" }
+        ];
         
         // DOM元素
         const timerTabBtn = document.getElementById('timer-tab');
@@ -568,6 +780,8 @@
         const notificationsList = document.getElementById('notifications-list');
         
         // 模态框
+        const worldClockModal = document.getElementById('world-clock-modal');
+        const worldClockModalContent = document.getElementById('world-clock-modal-content');
         const historyModal = document.getElementById('history-modal');
         const historyModalContent = document.getElementById('history-modal-content');
         const settingsModal = document.getElementById('settings-modal');
@@ -590,6 +804,8 @@
             setInterval(updateDateTime, 1000);
             applySettings();
             setupEventListeners();
+            updateWorldClock(); // 初始化世界时钟显示
+            setInterval(updateWorldClock, 1000); // 每秒更新世界时钟
         });
         
         // 设置事件监听器
@@ -610,17 +826,29 @@
             document.getElementById('create-countdown-day').addEventListener('click', createCountdownDay);
             document.getElementById('cancel-countdown-day').addEventListener('click', () => clearForm('countdown-day'));
             
-            // 模态框控制
+            // 世界时钟控制
+            document.getElementById('world-clock-btn').addEventListener('click', openWorldClockModal);
+            document.getElementById('mobile-world-clock-btn').addEventListener('click', openWorldClockModal);
+            document.getElementById('close-world-clock').addEventListener('click', closeWorldClockModal);
+            document.getElementById('timezone-search').addEventListener('input', searchTimezones);
+            
+            // 历史记录控制
             document.getElementById('history-btn').addEventListener('click', openHistoryModal);
             document.getElementById('mobile-history-btn').addEventListener('click', openHistoryModal);
             document.getElementById('close-history').addEventListener('click', closeHistoryModal);
             document.getElementById('clear-history').addEventListener('click', clearHistory);
             
+            // 设置控制
             document.getElementById('settings-btn').addEventListener('click', openSettingsModal);
             document.getElementById('mobile-settings-btn').addEventListener('click', openSettingsModal);
             document.getElementById('close-settings').addEventListener('click', closeSettingsModal);
             document.getElementById('save-settings').addEventListener('click', saveSettings);
             
+            // 语言切换
+            document.getElementById('lang-zh').addEventListener('click', () => setLanguage('zh'));
+            document.getElementById('lang-en').addEventListener('click', () => setLanguage('en'));
+            
+            // 关于控制
             document.getElementById('about-btn').addEventListener('click', openAboutModal);
             document.getElementById('mobile-about-btn').addEventListener('click', openAboutModal);
             document.getElementById('close-about').addEventListener('click', closeAboutModal);
@@ -664,6 +892,129 @@
             document.getElementById('window-timer-reset').addEventListener('click', resetWindowTimer);
             document.getElementById('window-timer-delete').addEventListener('click', deleteWindowTimer);
             document.getElementById('window-timer-minimize').addEventListener('click', minimizeWindowTimer);
+        }
+        
+        // 打开世界时钟模态框
+        function openWorldClockModal() {
+            worldClockModal.classList.remove('hidden');
+            setTimeout(() => {
+                worldClockModalContent.classList.remove('scale-95', 'opacity-0');
+                worldClockModalContent.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+        
+        // 关闭世界时钟模态框
+        function closeWorldClockModal() {
+            worldClockModalContent.classList.remove('scale-100', 'opacity-100');
+            worldClockModalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                worldClockModal.classList.add('hidden');
+            }, 300);
+        }
+        
+        // 更新世界时钟显示
+        function updateWorldClock() {
+            const timezonesContainer = document.getElementById('timezones-container');
+            if (!timezonesContainer) return;
+            
+            timezonesContainer.innerHTML = '';
+            
+            timezones.forEach(tz => {
+                const card = document.createElement('div');
+                card.className = 'world-time-card bg-white dark:bg-gray-800 rounded-lg p-4 hover:shadow-md transition-shadow';
+                
+                const now = new Date();
+                const options = {
+                    timeZone: tz.id,
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: settings.language === 'en'
+                };
+                
+                const timeString = new Intl.DateTimeFormat(settings.language === 'en' ? 'en-US' : 'zh-CN', options).format(now);
+                const dateOptions = {
+                    timeZone: tz.id,
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                };
+                
+                const dateString = new Intl.DateTimeFormat(settings.language === 'en' ? 'en-US' : 'zh-CN', dateOptions).format(now);
+                
+                card.innerHTML = `
+                    <div class="flex items-center mb-3">
+                        <i class="fa fa-globe text-primary mr-2"></i>
+                        <h4 class="font-bold text-gray-800 dark:text-white">${tz.name}</h4>
+                    </div>
+                    <div class="text-2xl font-bold text-gray-800 dark:text-white mb-2">${timeString}</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">${dateString}</div>
+                `;
+                
+                timezonesContainer.appendChild(card);
+            });
+        }
+        
+        // 搜索时区
+        function searchTimezones() {
+            const searchTerm = document.getElementById('timezone-search').value.toLowerCase();
+            const timezonesContainer = document.getElementById('timezones-container');
+            if (!timezonesContainer) return;
+            
+            const cards = timezonesContainer.querySelectorAll('.world-time-card');
+            cards.forEach(card => {
+                const tzName = card.querySelector('h4').textContent.toLowerCase();
+                const shouldShow = tzName.includes(searchTerm);
+                card.style.display = shouldShow ? 'block' : 'none';
+                
+                // 高亮显示匹配部分
+                if (shouldShow && searchTerm) {
+                    const regex = new RegExp(`(${searchTerm})`, 'gi');
+                    const highlightedName = tzName.replace(regex, '<span class="highlight">$1</span>');
+                    card.querySelector('h4').innerHTML = card.querySelector('h4').innerHTML.replace(tzName, highlightedName);
+                }
+            });
+        }
+        
+        // 设置语言
+        function setLanguage(lang) {
+            settings.language = lang;
+            applyTranslations();
+            saveToLocalStorage();
+            
+            // 更新UI
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('border-primary', 'bg-primary/10');
+                btn.classList.add('border-gray-200', 'dark:border-gray-700');
+            });
+            document.getElementById(`lang-${lang}`).classList.remove('border-gray-200', 'dark:border-gray-700');
+            document.getElementById(`lang-${lang}`).classList.add('border-primary', 'bg-primary/10');
+        }
+        
+        // 应用翻译
+        function applyTranslations() {
+            const lang = settings.language;
+            const translation = translations[lang];
+            
+            // 更新所有带有 data-i18n 属性的元素
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translation[key]) {
+                    el.textContent = translation[key];
+                }
+            });
+            
+            // 更新所有带有 data-i18n-placeholder 属性的元素
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (translation[key]) {
+                    el.placeholder = translation[key];
+                }
+            });
+            
+            // 更新日期时间显示
+            updateDateTime();
         }
         
         // 切换标签
@@ -720,10 +1071,10 @@
             const hours = parseInt(document.getElementById('timer-hours').value) || 0;
             const minutes = parseInt(document.getElementById('timer-minutes').value) || 0;
             const seconds = parseInt(document.getElementById('timer-seconds').value) || 0;
-            const name = document.getElementById('timer-name').value || '倒计时';
+            const name = document.getElementById('timer-name').value || translations[settings.language].countdown;
             
             if (hours === 0 && minutes === 0 && seconds === 0) {
-                alert('请设置有效的时间!');
+                alert(settings.language === 'zh' ? '请设置有效的时间!' : 'Please set a valid time!');
                 return;
             }
             
@@ -750,7 +1101,7 @@
         
         // 创建秒表
         function createStopwatch() {
-            const name = document.getElementById('stopwatch-name').value || '秒表';
+            const name = document.getElementById('stopwatch-name').value || translations[settings.language].stopwatch;
             
             const newStopwatch = {
                 id: Date.now().toString(),
@@ -773,10 +1124,10 @@
         // 创建闹钟
         function createAlarm() {
             const time = document.getElementById('alarm-time').value;
-            const name = document.getElementById('alarm-name').value || '闹钟';
+            const name = document.getElementById('alarm-name').value || translations[settings.language].alarm;
             
             if (!time) {
-                alert('请选择有效的时间!');
+                alert(settings.language === 'zh' ? '请选择有效的时间!' : 'Please select a valid time!');
                 return;
             }
             
@@ -814,10 +1165,10 @@
         // 创建倒计日
         function createCountdownDay() {
             const date = document.getElementById('countdown-day-date').value;
-            const name = document.getElementById('countdown-day-name').value || '倒计日';
+            const name = document.getElementById('countdown-day-name').value || translations[settings.language].countdownDay;
             
             if (!date) {
-                alert('请选择有效的日期!');
+                alert(settings.language === 'zh' ? '请选择有效的日期!' : 'Please select a valid date!');
                 return;
             }
             
@@ -829,7 +1180,7 @@
             
             const timeDiff = targetDate - now;
             if (timeDiff <= 0) {
-                alert('请选择未来的日期!');
+                alert(settings.language === 'zh' ? '请选择未来的日期!' : 'Please select a future date!');
                 return;
             }
             
@@ -863,8 +1214,8 @@
                 timersContainer.innerHTML = `
                     <div class="text-center text-gray-500 dark:text-gray-400 py-10 col-span-full">
                         <i class="fa fa-clock-o text-5xl mb-4 opacity-30"></i>
-                        <p>还没有任何计时器</p>
-                        <p class="text-sm mt-2">创建一个新的计时器开始计时</p>
+                        <p>${translations[settings.language].noTimers}</p>
+                        <p class="text-sm mt-2">${translations[settings.language].createTimerPrompt}</p>
                     </div>
                 `;
                 return;
@@ -893,7 +1244,7 @@
                     case 'countdown-day':
                         timerIcon = 'fa-calendar';
                         const days = Math.floor(timer.remainingSeconds / (3600 * 24));
-                        timeDisplay = `${days} 天`;
+                        timeDisplay = `${days} ${translations[settings.language].days || '天'}`;
                         break;
                 }
                 
@@ -917,13 +1268,13 @@
                     </div>
                     <div class="flex justify-center space-x-2">
                         <button class="start-timer px-3 py-1.5 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors ${timer.isRunning ? 'hidden' : ''}" data-id="${timer.id}">
-                            <i class="fa fa-play mr-1"></i>开始
+                            <i class="fa fa-play mr-1"></i>${translations[settings.language].start}
                         </button>
                         <button class="pause-timer px-3 py-1.5 bg-warning text-white rounded-lg hover:bg-warning/90 transition-colors ${!timer.isRunning ? 'hidden' : ''}" data-id="${timer.id}">
-                            <i class="fa fa-pause mr-1"></i>暂停
+                            <i class="fa fa-pause mr-1"></i>${translations[settings.language].pause}
                         </button>
                         <button class="open-timer px-3 py-1.5 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors" data-id="${timer.id}">
-                            <i class="fa fa-expand mr-1"></i>打开
+                            <i class="fa fa-expand mr-1"></i>${translations[settings.language].open || '打开'}
                         </button>
                     </div>
                 `;
@@ -1003,7 +1354,7 @@
                         timer.isRunning = false;
                         
                         // 添加到历史记录
-                        addToHistory(timer.name, timer.type, '完成');
+                        addToHistory(timer.name, timer.type, translations[settings.language].completed || '完成');
                         
                         // 播放提示音
                         playAlarmSound();
@@ -1121,7 +1472,7 @@
         function deleteWindowTimer() {
             if (!currentTimerId) return;
             
-            if (confirm('确定要删除这个计时器吗？')) {
+            if (confirm(settings.language === 'zh' ? '确定要删除这个计时器吗？' : 'Are you sure you want to delete this timer?')) {
                 deleteTimer(currentTimerId);
                 closeTimerWindow();
             }
@@ -1144,7 +1495,7 @@
             }
             
             // 添加到历史记录
-            addToHistory(timer.name, timer.type, '已删除');
+            addToHistory(timer.name, timer.type, translations[settings.language].deleted || '已删除');
             
             // 从数组中删除
             timers.splice(timerIndex, 1);
@@ -1227,7 +1578,7 @@
                 historyRecords.innerHTML = `
                     <div class="text-center text-gray-500 dark:text-gray-400 py-10">
                         <i class="fa fa-history text-4xl mb-3 opacity-30"></i>
-                        <p>暂无历史记录</p>
+                        <p>${translations[settings.language].noHistory}</p>
                     </div>
                 `;
                 return;
@@ -1256,16 +1607,16 @@
                 }
                 
                 switch(item.status) {
-                    case '完成':
+                    case translations[settings.language].completed || '完成':
                         statusClass = 'text-green-500';
                         break;
-                    case '已删除':
+                    case translations[settings.language].deleted || '已删除':
                         statusClass = 'text-gray-500';
                         break;
                 }
                 
                 const time = new Date(item.time);
-                const timeString = time.toLocaleString();
+                const timeString = time.toLocaleString(settings.language === 'en' ? 'en-US' : 'zh-CN');
                 
                 record.innerHTML = `
                     <div class="flex items-center justify-between">
@@ -1286,7 +1637,7 @@
         
         // 清空历史记录
         function clearHistory() {
-            if (confirm('确定要清空所有历史记录吗？')) {
+            if (confirm(settings.language === 'zh' ? '确定要清空所有历史记录吗？' : 'Are you sure you want to clear all history?')) {
                 history = [];
                 updateHistoryDisplay();
                 saveToLocalStorage();
@@ -1349,8 +1700,8 @@
                 notificationsList.innerHTML = `
                     <div class="text-center text-gray-500 dark:text-gray-400 py-10">
                         <i class="fa fa-bell-slash text-4xl mb-3 opacity-30"></i>
-                        <p>没有通知</p>
-                        <p class="text-sm mt-2">计时器结束时将显示通知</p>
+                        <p>${translations[settings.language].noNotifications}</p>
+                        <p class="text-sm mt-2">${translations[settings.language].notificationsHint}</p>
                     </div>
                 `;
                 return;
@@ -1366,24 +1717,24 @@
                 switch(notification.type) {
                     case 'timer':
                         typeIcon = 'fa-clock-o';
-                        typeText = '倒计时';
+                        typeText = translations[settings.language].countdown;
                         break;
                     case 'stopwatch':
                         typeIcon = 'fa-hourglass-half';
-                        typeText = '秒表';
+                        typeText = translations[settings.language].stopwatch;
                         break;
                     case 'alarm':
                         typeIcon = 'fa-bell-o';
-                        typeText = '闹钟';
+                        typeText = translations[settings.language].alarm;
                         break;
                     case 'countdown-day':
                         typeIcon = 'fa-calendar';
-                        typeText = '倒计日';
+                        typeText = translations[settings.language].countdownDay;
                         break;
                 }
                 
                 const time = new Date(notification.time);
-                const timeString = time.toLocaleString();
+                const timeString = time.toLocaleString(settings.language === 'en' ? 'en-US' : 'zh-CN');
                 
                 notif.innerHTML = `
                     <div class="flex justify-between items-start">
@@ -1435,7 +1786,7 @@
         
         // 清除所有通知
         function clearAllNotifications() {
-            if (confirm('确定要清除所有通知吗？')) {
+            if (confirm(settings.language === 'zh' ? '确定要清除所有通知吗？' : 'Are you sure you want to clear all notifications?')) {
                 notifications = [];
                 updateNotificationsDisplay();
                 updateNotificationBadge();
@@ -1515,24 +1866,24 @@
             switch(notification.type) {
                 case 'timer':
                     typeIcon = 'fa-clock-o';
-                    typeText = '倒计时';
+                    typeText = translations[settings.language].countdown;
                     break;
                 case 'stopwatch':
                     typeIcon = 'fa-hourglass-half';
-                    typeText = '秒表';
+                    typeText = translations[settings.language].stopwatch;
                     break;
                 case 'alarm':
                     typeIcon = 'fa-bell-o';
-                    typeText = '闹钟';
+                    typeText = translations[settings.language].alarm;
                     break;
                 case 'countdown-day':
                     typeIcon = 'fa-calendar';
-                    typeText = '倒计日';
+                    typeText = translations[settings.language].countdownDay;
                     break;
             }
             
             const time = new Date();
-            const timeString = time.toLocaleTimeString();
+            const timeString = time.toLocaleTimeString(settings.language === 'en' ? 'en-US' : 'zh-CN');
             
             notifItem.innerHTML = `
                 <div class="flex items-start">
@@ -1569,7 +1920,7 @@
                         notificationList.innerHTML = `
                             <div class="text-center text-gray-500 dark:text-gray-400 py-8">
                                 <i class="fa fa-bell-slash text-3xl mb-3 opacity-30"></i>
-                                <p>没有新通知</p>
+                                <p>${translations[settings.language].noNotifications}</p>
                             </div>
                         `;
                     }
@@ -1584,7 +1935,7 @@
                     notificationList.innerHTML = `
                         <div class="text-center text-gray-500 dark:text-gray-400 py-8">
                             <i class="fa fa-bell-slash text-3xl mb-3 opacity-30"></i>
-                            <p>没有新通知</p>
+                            <p>${translations[settings.language].noNotifications}</p>
                         </div>
                     `;
                 }
@@ -1600,7 +1951,7 @@
                             notificationList.innerHTML = `
                                 <div class="text-center text-gray-500 dark:text-gray-400 py-8">
                                     <i class="fa fa-bell-slash text-3xl mb-3 opacity-30"></i>
-                                    <p>没有新通知</p>
+                                    <p>${translations[settings.language].noNotifications}</p>
                                 </div>
                             `;
                         }
@@ -1621,19 +1972,19 @@
             switch(notification.type) {
                 case 'timer':
                     typeIcon = 'fa-clock-o';
-                    typeText = '倒计时';
+                    typeText = translations[settings.language].countdown;
                     break;
                 case 'stopwatch':
                     typeIcon = 'fa-hourglass-half';
-                    typeText = '秒表';
+                    typeText = translations[settings.language].stopwatch;
                     break;
                 case 'alarm':
                     typeIcon = 'fa-bell-o';
-                    typeText = '闹钟';
+                    typeText = translations[settings.language].alarm;
                     break;
                 case 'countdown-day':
                     typeIcon = 'fa-calendar';
-                    typeText = '倒计日';
+                    typeText = translations[settings.language].countdownDay;
                     break;
             }
             
@@ -1643,13 +1994,13 @@
                         <i class="fa ${typeIcon} text-white text-3xl"></i>
                     </div>
                     <h2 class="text-3xl font-bold mb-2">${notification.name}</h2>
-                    <p class="text-xl mb-8">${typeText} 时间到!</p>
+                    <p class="text-xl mb-8">${typeText} ${settings.language === 'zh' ? '时间到!' : 'Time is up!'}</p>
                     <div class="flex justify-center">
                         <button id="dismiss-notification" class="px-6 py-3 bg-white text-gray-800 rounded-lg font-medium hover:bg-gray-100 transition-colors">
-                            关闭
+                            ${settings.language === 'zh' ? '关闭' : 'Dismiss'}
                         </button>
                         <button id="save-notification" class="px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 ml-4 transition-colors">
-                            保存通知
+                            ${settings.language === 'zh' ? '保存通知' : 'Save Notification'}
                         </button>
                     </div>
                 </div>
@@ -1698,6 +2049,13 @@
             });
             document.getElementById(`notification-${settings.notificationType}`).classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
             document.getElementById(`notification-${settings.notificationType}`).classList.add('bg-primary', 'text-white');
+            
+            // 设置语言选项
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('border-primary', 'bg-primary/10');
+                btn.classList.add('border-gray-200', 'dark:border-gray-700');
+            });
+            document.getElementById(`lang-${settings.language}`).classList.add('border-primary', 'bg-primary/10');
             
             // 设置自动保存选项
             document.getElementById('auto-save').checked = settings.autoSave;
@@ -1816,6 +2174,9 @@
             
             // 应用自动保存设置
             settings.autoSave = document.getElementById('auto-save').checked;
+            
+            // 应用语言设置
+            applyTranslations();
         }
         
         // 切换移动端菜单
@@ -1847,16 +2208,28 @@
             const now = new Date();
             
             // 格式化时间
-            const hours = now.getHours().toString().padStart(2, '0');
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            const seconds = now.getSeconds().toString().padStart(2, '0');
-            const timeString = `${hours}:${minutes}:${seconds}`;
+            const options = {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: settings.language === 'en'
+            };
+            
+            const timeString = now.toLocaleTimeString(settings.language === 'en' ? 'en-US' : 'zh-CN', options);
             
             // 格式化日期
-            const year = now.getFullYear();
-            const month = (now.getMonth() + 1).toString().padStart(2, '0');
-            const date = now.getDate().toString().padStart(2, '0');
-            const dateString = `${year}年${month}月${date}日`;
+            const dateOptions = {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            };
+            
+            let dateString = now.toLocaleDateString(settings.language === 'en' ? 'en-US' : 'zh-CN', dateOptions);
+            
+            // 中文格式调整
+            if (settings.language === 'zh') {
+                dateString = dateString.replace(/\//g, '年').replace(/\//g, '月') + '日';
+            }
             
             // 更新UI
             document.getElementById('current-time').textContent = timeString;
