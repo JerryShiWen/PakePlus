@@ -1,32 +1,1009 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <link rel="stylesheet" href="styles.css" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>PakePlus App</title>
-        <script type="module" src="/main.js" defer></script>
-    </head>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Press the Button - Windows12Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #9c5fff;
+            --secondary-color: #ff6ec7;
+            --bounce-time: 0.5s;
+            --button-size: 200px;
+            --animation-type: 'bounce';
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.15);
+        }
 
-    <body>
-        <main class="container">
-            <h1>Welcome to PakePlus</h1>
-            <form class="row" id="greet-form">
-                <input id="inputValue" placeholder="Enter a something..." />
-            </form>
-            <div class="resultBox">
-                <span>result: </span>
-                <span id="result"></span>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1a1a2a, #2d2d42);
+            color: white;
+            overflow: hidden;
+            position: relative;
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        h1 {
+            font-weight: 800;
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .game-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .button-container {
+            position: relative;
+            flex: 0 0 auto;
+        }
+
+        #main-button {
+            width: var(--button-size);
+            height: var(--button-size);
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            cursor: pointer;
+            box-shadow: 
+                0 15px 35px rgba(156, 95, 255, 0.4),
+                0 5px 15px rgba(255, 110, 199, 0.3),
+                inset 0 0 15px rgba(255, 255, 255, 0.2);
+            color: white;
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: transform var(--bounce-time) cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #main-button:hover {
+            transform: scale(1.05);
+        }
+
+        #main-button:active {
+            transform: scale(0.92);
+        }
+
+        #main-button::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 60%);
+            opacity: 0;
+            transform: rotate(30deg);
+            transition: opacity 0.3s;
+        }
+
+        #main-button:active::after {
+            opacity: 1;
+            transition: opacity 0s;
+        }
+
+        .controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: var(--glass-bg);
+            padding: 10px 15px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            border: 1px solid var(--glass-border);
+        }
+
+        #time-display {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        #pause-btn, #resume-btn, #about-btn, #copilot-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #pause-btn:hover, #resume-btn:hover, #about-btn:hover, #copilot-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .counter {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-top: 1.5rem;
+            color: #fff;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .settings-panel {
+            background: var(--glass-bg);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            text-align: left;
+            border: 1px solid var(--glass-border);
+        }
+
+        .settings-panel h2 {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 1.5rem;
+        }
+
+        .setting-group {
+            margin-bottom: 20px;
+        }
+
+        .setting-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .color-pickers {
+            display: flex;
+            gap: 10px;
+        }
+
+        .color-picker {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .color-picker input {
+            width: 100%;
+            height: 100%;
+            border: none;
+            cursor: pointer;
+            background: transparent;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .slider-container input {
+            flex: 1;
+        }
+
+        .slider-value {
+            width: 50px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--glass-border);
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+            font-size: 1rem;
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(156, 95, 255, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 20px rgba(156, 95, 255, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(156, 95, 255, 0);
+            }
+        }
+
+        .pulse {
+            animation: pulse 1.5s infinite;
+        }
+
+        .reset-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+            transition: transform 0.2s;
+        }
+
+        .reset-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* 模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: var(--secondary-color);
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .modal-header h2 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .modal-header .version {
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+
+        .modal-body {
+            margin-bottom: 25px;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .feature-list li {
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-list i {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        .modal-footer {
+            text-align: center;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* Copilot 模态框样式 */
+        #copilot-modal .modal-content {
+            width: 90%;
+            max-width: 900px;
+            height: 80vh;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .modal-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-actions button {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .modal-actions button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .iframe-container {
+            flex: 1;
+            overflow: hidden;
+            border-radius: 0 0 20px 20px;
+        }
+
+        #copilot-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 0 0 20px 20px;
+        }
+
+        .loading-indicator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top: 5px solid var(--primary-color);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .error-message i {
+            font-size: 3rem;
+            color: #ff4757;
+            margin-bottom: 15px;
+        }
+
+        .error-message h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .error-message p {
+            margin-bottom: 10px;
+            opacity: 0.8;
+        }
+
+        .troubleshoot-list {
+            text-align: left;
+            margin-top: 20px;
+            padding-left: 20px;
+        }
+
+        .troubleshoot-list li {
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .game-area {
+                flex-direction: column;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .controls {
+                position: relative;
+                top: 0;
+                right: 0;
+                justify-content: center;
+                margin-bottom: 20px;
+            }
+            
+            .modal-content {
+                padding: 20px;
+            }
+            
+            .modal-header h2 {
+                font-size: 1.8rem;
+            }
+            
+            #copilot-modal .modal-content {
+                width: 95%;
+                height: 70vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <div id="time-display">00:00:00</div>
+        <button id="pause-btn"><i class="fas fa-pause"></i></button>
+        <button id="resume-btn"><i class="fas fa-play"></i></button>
+        <button id="about-btn"><i class="fas fa-info"></i></button>
+        <button id="copilot-btn"><i class="fas fa-robot"></i></button>
+    </div>
+
+    <div class="container">
+        <h1><i class="fas fa-gamepad"></i> PRESS THE BUTTON</h1>
+        
+        <div class="game-area">
+            <div class="button-container">
+                <button id="main-button" class="pulse">Press Me</button>
+                <div class="counter">按下次数: <span id="press-count">0</span></div>
             </div>
-            <div class="invokeBox">
-                <button id="openUrl">open_url_browser</button>
-                <button id="openUrlNew">open_url_new</button>
-                <button id="runCommand">run_command</button>
-                <button id="downloadFile">download_file</button>
-                <button id="getExeDir">get_exe_dir</button>
-                <button id="getEnvVar">get_env_var</button>
-                <button id="findPort">find_port</button>
+            
+            <div class="settings-panel">
+                <h2><i class="fas fa-cog"></i> 游戏设置</h2>
+                
+                <div class="setting-group">
+                    <label>按钮颜色:</label>
+                    <div class="color-pickers">
+                        <div class="color-picker">
+                            <input type="color" id="primary-color" value="#9c5fff">
+                        </div>
+                        <div class="color-picker">
+                            <input type="color" id="secondary-color" value="#ff6ec7">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="setting-group">
+                    <label>回弹时间: <span class="slider-value" id="bounce-time-value">0.5s</span></label>
+                    <div class="slider-container">
+                        <input type="range" id="bounce-time" min="0.1" max="2" step="0.1" value="0.5">
+                    </div>
+                </div>
+                
+                <div class="setting-group">
+                    <label>按钮大小: <span class="slider-value" id="size-value">200px</span></label>
+                    <div class="slider-container">
+                        <input type="range" id="button-size" min="100" max="300" step="10" value="200">
+                    </div>
+                </div>
+                
+                <div class="setting-group">
+                    <label>动画效果:</label>
+                    <select id="animation-type">
+                        <option value="bounce">回弹效果</option>
+                        <option value="pulse">脉冲效果</option>
+                        <option value="rotate">旋转效果</option>
+                        <option value="shake">震动效果</option>
+                    </select>
+                </div>
+                
+                <button class="reset-btn" id="reset-btn"><i class="fas fa-sync-alt"></i> 重置游戏</button>
             </div>
-        </main>
-    </body>
+        </div>
+    </div>
+
+    <!-- 关于模态框 -->
+    <div class="modal" id="about-modal">
+        <div class="modal-content">
+            <button class="close-btn" id="close-about"><i class="fas fa-times"></i></button>
+            
+            <div class="modal-header">
+                <h2>Windows12Game</h2>
+                <div class="version">PRESS THE BUTTON 1.0</div>
+            </div>
+            
+            <div class="modal-body">
+                <p>一款简单却令人上瘾的点击游戏，带有Windows 12设计风格的现代化界面。</p>
+                
+                <ul class="feature-list">
+                    <li><i class="fas fa-check-circle"></i> 可自定义按钮颜色和渐变效果</li>
+                    <li><i class="fas fa-check-circle"></i> 调整回弹时间和按钮大小</li>
+                    <li><i class="fas fa-check-circle"></i> 多种动画效果选择</li>
+                    <li><i class="fas fa-check-circle"></i> 实时计时和点击计数</li>
+                    <li><i class="fas fa-check-circle"></i> 玻璃态效果和流畅过渡动画</li>
+                </ul>
+            </div>
+            
+            <div class="modal-footer">
+                <p>&copy; 2023 Windows12Game. 所有权利保留。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Copilot 模态框 -->
+    <div class="modal" id="copilot-modal">
+        <div class="modal-content">
+            <div class="modal-toolbar">
+                <div class="modal-title">
+                    <i class="fas fa-robot"></i>
+                    <span>Microsoft Copilot</span>
+                </div>
+                <div class="modal-actions">
+                    <button id="reload-copilot"><i class="fas fa-sync-alt"></i> 重新加载</button>
+                    <button class="close-btn" id="close-copilot"><i class="fas fa-times"></i> 关闭</button>
+                </div>
+            </div>
+            
+            <div class="iframe-container">
+                <div id="loading" class="loading-indicator">
+                    <div class="spinner"></div>
+                    <p>正在加载 Copilot...</p>
+                </div>
+                
+                <div id="error-message" class="error-message" style="display: none;">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <h3>无法访问此网站</h3>
+                    <p>连接已重置。</p>
+                    <p>请试试以下办法：</p>
+                    <ul class="troubleshoot-list">
+                        <li>检查网络连接</li>
+                        <li>检查代理服务器和防火墙</li>
+                        <li>运行 Windows 网络诊断</li>
+                    </ul>
+                </div>
+                
+                <iframe id="copilot-iframe" src="about:blank" style="display: none;"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <div class="particles"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mainButton = document.getElementById('main-button');
+            const timeDisplay = document.getElementById('time-display');
+            const pauseBtn = document.getElementById('pause-btn');
+            const resumeBtn = document.getElementById('resume-btn');
+            const aboutBtn = document.getElementById('about-btn');
+            const copilotBtn = document.getElementById('copilot-btn');
+            const pressCountElement = document.getElementById('press-count');
+            const particlesContainer = document.querySelector('.particles');
+            const aboutModal = document.getElementById('about-modal');
+            const closeAbout = document.getElementById('close-about');
+            const copilotModal = document.getElementById('copilot-modal');
+            const closeCopilot = document.getElementById('close-copilot');
+            const reloadCopilot = document.getElementById('reload-copilot');
+            const copilotIframe = document.getElementById('copilot-iframe');
+            const loadingIndicator = document.getElementById('loading');
+            const errorMessage = document.getElementById('error-message');
+            
+            // 设置元素
+            const primaryColorPicker = document.getElementById('primary-color');
+            const secondaryColorPicker = document.getElementById('secondary-color');
+            const bounceTimeSlider = document.getElementById('bounce-time');
+            const bounceTimeValue = document.getElementById('bounce-time-value');
+            const buttonSizeSlider = document.getElementById('button-size');
+            const sizeValue = document.getElementById('size-value');
+            const animationTypeSelect = document.getElementById('animation-type');
+            const resetBtn = document.getElementById('reset-btn');
+            
+            let pressCount = 0;
+            let seconds = 0;
+            let minutes = 0;
+            let hours = 0;
+            let timerInterval = null;
+            let isPaused = false;
+            
+            // 初始化时间显示
+            updateTimeDisplay();
+            
+            // 开始计时
+            function startTimer() {
+                if (timerInterval) clearInterval(timerInterval);
+                
+                timerInterval = setInterval(() => {
+                    if (!isPaused) {
+                        seconds++;
+                        if (seconds >= 60) {
+                            seconds = 0;
+                            minutes++;
+                            if (minutes >= 60) {
+                                minutes = 0;
+                                hours++;
+                            }
+                        }
+                        updateTimeDisplay();
+                    }
+                }, 1000);
+            }
+            
+            // 更新时间显示
+            function updateTimeDisplay() {
+                timeDisplay.textContent = 
+                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+            
+            // 创建粒子效果
+            function createParticles(x, y) {
+                const particleCount = 12;
+                
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    particle.classList.add('particle');
+                    
+                    const size = Math.random() * 15 + 5;
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                    
+                    const angle = (i / particleCount) * Math.PI * 2;
+                    const distance = Math.random() * 60 + 40;
+                    
+                    particlesContainer.appendChild(particle);
+                    
+                    // 动画
+                    const animation = particle.animate([
+                        {
+                            transform: `translate(${x}px, ${y}px) scale(1)`,
+                            opacity: 1
+                        },
+                        {
+                            transform: `translate(${x + Math.cos(angle) * distance}px, ${y + Math.sin(angle) * distance}px) scale(0)`,
+                            opacity: 0
+                        }
+                    ], {
+                        duration: Math.random() * 800 + 700,
+                        easing: 'cubic-bezier(0.2, 0, 0.8, 1)'
+                    });
+                    
+                    animation.onfinish = () => {
+                        particle.remove();
+                    };
+                }
+            }
+            
+            // 按钮点击事件
+            mainButton.addEventListener('click', function(e) {
+                if (isPaused) return;
+                
+                // 增加按下次数
+                pressCount++;
+                pressCountElement.textContent = pressCount;
+                
+                // 创建粒子效果
+                const rect = mainButton.getBoundingClientRect();
+                const x = rect.left + rect.width / 2;
+                const y = rect.top + rect.height / 2;
+                createParticles(x, y);
+                
+                // 按钮动画效果
+                mainButton.style.transform = 'scale(0.92)';
+                setTimeout(() => {
+                    if (!isPaused) {
+                        mainButton.style.transform = 'scale(1)';
+                    }
+                }, 150);
+            });
+            
+            // 暂停按钮事件
+            pauseBtn.addEventListener('click', function() {
+                isPaused = true;
+                mainButton.classList.remove('pulse');
+                mainButton.style.transform = 'scale(0.95)';
+                mainButton.style.opacity = '0.7';
+            });
+            
+            // 继续按钮事件
+            resumeBtn.addEventListener('click', function() {
+                isPaused = false;
+                mainButton.classList.add('pulse');
+                mainButton.style.transform = 'scale(1)';
+                mainButton.style.opacity = '1';
+            });
+            
+            // 关于按钮事件
+            aboutBtn.addEventListener('click', function() {
+                aboutModal.classList.add('active');
+            });
+            
+            // 关闭关于模态框
+            closeAbout.addEventListener('click', function() {
+                aboutModal.classList.remove('active');
+            });
+            
+            // 点击模态框背景关闭
+            aboutModal.addEventListener('click', function(e) {
+                if (e.target === aboutModal) {
+                    aboutModal.classList.remove('active');
+                }
+            });
+            
+            // Copilot 按钮事件
+            copilotBtn.addEventListener('click', function() {
+                copilotModal.classList.add('active');
+                loadCopilot();
+            });
+            
+            // 关闭Copilot模态框
+            closeCopilot.addEventListener('click', function() {
+                copilotModal.classList.remove('active');
+            });
+            
+            // 重新加载Copilot
+            reloadCopilot.addEventListener('click', function() {
+                loadCopilot();
+            });
+            
+            // 点击模态框背景关闭
+            copilotModal.addEventListener('click', function(e) {
+                if (e.target === copilotModal) {
+                    copilotModal.classList.remove('active');
+                }
+            });
+            
+            // 加载Copilot网站
+            function loadCopilot() {
+                // 显示加载中，隐藏错误和iframe
+                loadingIndicator.style.display = 'flex';
+                errorMessage.style.display = 'none';
+                copilotIframe.style.display = 'none';
+                
+                // 设置iframe源
+                const copilotUrl = 'https://copilot.microsoft.com';
+                
+                // 设置超时检测
+                const timeout = setTimeout(() => {
+                    showCopilotError();
+                }, 10000); // 10秒超时
+                
+                // 加载iframe
+                copilotIframe.src = copilotUrl;
+                
+                // 监听iframe加载完成
+                copilotIframe.onload = function() {
+                    clearTimeout(timeout);
+                    // 检查iframe内容是否有效
+                    try {
+                        // 由于跨域限制，我们不能直接访问iframe的内容
+                        // 所以只能假设加载成功
+                        loadingIndicator.style.display = 'none';
+                        copilotIframe.style.display = 'block';
+                    } catch (e) {
+                        showCopilotError();
+                    }
+                };
+                
+                // 监听iframe加载错误
+                copilotIframe.onerror = function() {
+                    clearTimeout(timeout);
+                    showCopilotError();
+                };
+            }
+            
+            // 显示Copilot错误
+            function showCopilotError() {
+                loadingIndicator.style.display = 'none';
+                errorMessage.style.display = 'block';
+                copilotIframe.style.display = 'none';
+            }
+            
+            // 颜色选择器事件
+            primaryColorPicker.addEventListener('input', function() {
+                document.documentElement.style.setProperty('--primary-color', this.value);
+            });
+            
+            secondaryColorPicker.addEventListener('input', function() {
+                document.documentElement.style.setProperty('--secondary-color', this.value);
+            });
+            
+            // 回弹时间滑块事件
+            bounceTimeSlider.addEventListener('input', function() {
+                const value = this.value + 's';
+                bounceTimeValue.textContent = value;
+                document.documentElement.style.setProperty('--bounce-time', value);
+            });
+            
+            // 按钮大小滑块事件
+            buttonSizeSlider.addEventListener('input', function() {
+                const value = this.value + 'px';
+                sizeValue.textContent = value;
+                document.documentElement.style.setProperty('--button-size', value);
+            });
+            
+            // 动画类型选择事件
+            animationTypeSelect.addEventListener('change', function() {
+                // 移除所有可能的动画类
+                mainButton.classList.remove('pulse', 'rotate-animation', 'shake-animation');
+                
+                // 添加选中的动画类
+                if (this.value === 'pulse') {
+                    mainButton.classList.add('pulse');
+                } else if (this.value === 'rotate') {
+                    mainButton.classList.add('rotate-animation');
+                } else if (this.value === 'shake') {
+                    mainButton.classList.add('shake-animation');
+                }
+            });
+            
+            // 重置按钮事件
+            resetBtn.addEventListener('click', function() {
+                // 重置计数器
+                pressCount = 0;
+                pressCountElement.textContent = pressCount;
+                
+                // 重置时间
+                seconds = 0;
+                minutes = 0;
+                hours = 0;
+                updateTimeDisplay();
+                
+                // 恢复暂停状态
+                if (isPaused) {
+                    isPaused = false;
+                    mainButton.classList.add('pulse');
+                    mainButton.style.transform = 'scale(1)';
+                    mainButton.style.opacity = '1';
+                }
+                
+                // 重置设置
+                primaryColorPicker.value = '#9c5fff';
+                secondaryColorPicker.value = '#ff6ec7';
+                bounceTimeSlider.value = 0.5;
+                buttonSizeSlider.value = 200;
+                animationTypeSelect.value = 'bounce';
+                
+                document.documentElement.style.setProperty('--primary-color', '#9c5fff');
+                document.documentElement.style.setProperty('--secondary-color', '#ff6ec7');
+                document.documentElement.style.setProperty('--bounce-time', '0.5s');
+                document.documentElement.style.setProperty('--button-size', '200px');
+                
+                bounceTimeValue.textContent = '0.5s';
+                sizeValue.textContent = '200px';
+                
+                mainButton.classList.remove('rotate-animation', 'shake-animation');
+                mainButton.classList.add('pulse');
+            });
+            
+            // 添加旋转和震动动画样式
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes rotate {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+                
+                @keyframes shake {
+                    0%, 100% { transform: translateX(0); }
+                    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                    20%, 40%, 60%, 80% { transform: translateX(5px); }
+                }
+                
+                .rotate-animation {
+                    animation: rotate 4s linear infinite;
+                }
+                
+                .shake-animation {
+                    animation: shake 0.5s ease infinite;
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // 启动计时器
+            startTimer();
+        });
+    </script>
+</body>
 </html>
